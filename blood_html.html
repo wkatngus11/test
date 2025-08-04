@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>혈액형 예측기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flexboxgrid@6.3.1/dist/flexboxgrid.min.css">
+    <style>
+        /* Main styling */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* Custom blood type cards */
+        .blood-card {
+            transition: transform 0.3s ease;
+        }
+        .blood-card:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">혈액형 예측기</h1>
+            <p class="text-gray-600">부모의 혈액형으로 자녀의 가능한 혈액형을 예측합니다</p>
+        </header>
+
+        <!-- Main Input Form -->
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6 mb-8">
+            <form id="bloodTypeForm" class="space-y-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">어머니 혈액형</label>
+                        <select id="momBloodType" class="w-full p-2 border rounded" required>
+                            <option value="">선택하세요</option>
+                            <option value="A">A형</option>
+                            <option value="B">B형</option>
+                            <option value="O">O형</option>
+                            <option value="AB">AB형</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">아버지 혈액형</label>
+                        <select id="dadBloodType" class="w-full p-2 border rounded" required>
+                            <option value="">선택하세요</option>
+                            <option value="A">A형</option>
+                            <option value="B">B형</option>
+                            <option value="O">O형</option>
+                            <option value="AB">AB형</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors">
+                    예측하기
+                </button>
+            </form>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="hidden fade-in max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6">
+            <h2 class="text-2xl font-bold mb-4 text-center">예측 결과</h2>
+            <div id="resultList" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Results will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Blood type inheritance rules
+        const bloodTypeRules = {
+            'A': {
+                'A': ['A', 'O'],
+                'B': ['A', 'B', 'AB', 'O'],
+                'O': ['A', 'O'],
+                'AB': ['A', 'B', 'AB']
+            },
+            'B': {
+                'A': ['A', 'B', 'AB', 'O'],
+                'B': ['B', 'O'],
+                'O': ['B', 'O'],
+                'AB': ['A', 'B', 'AB']
+            },
+            'O': {
+                'A': ['A', 'O'],
+                'B': ['B', 'O'],
+                'O': ['O'],
+                'AB': ['A', 'B']
+            },
+            'AB': {
+                'A': ['A', 'B', 'AB'],
+                'B': ['A', 'B', 'AB'],
+                'O': ['A', 'B'],
+                'AB': ['A', 'B', 'AB']
+            }
+        };
+
+        document.getElementById('bloodTypeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const momType = document.getElementById('momBloodType').value;
+            const dadType = document.getElementById('dadBloodType').value;
+            
+            if (momType && dadType) {
+                const possibleTypes = bloodTypeRules[momType][dadType];
+                displayResults(possibleTypes);
+            }
+        });
+
+        function displayResults(types) {
+            const resultsDiv = document.getElementById('results');
+            const resultList = document.getElementById('resultList');
+            
+            resultList.innerHTML = '';
+            
+            types.forEach(type => {
+                const card = document.createElement('div');
+                card.className = 'blood-card bg-gray-50 p-4 rounded-lg text-center shadow hover:shadow-md';
+                card.innerHTML = `
+                    <div class="text-2xl font-bold text-red-600">${type}형</div>
+                `;
+                resultList.appendChild(card);
+            });
+            
+            resultsDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
