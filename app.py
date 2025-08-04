@@ -1,7 +1,7 @@
 import streamlit as st #as=알리어스
 import pandas as pd
 #import plotly.figure_factory as ff
-import plotly.express as px
+#import plotly.express as px
 #import matplotlib.pyplot as plt
 #global var
 url= "https://www.youtube.com/watch?v=XyEOEBsa8I4"
@@ -56,5 +56,6 @@ with col1:
 with col2:
     with st.expander('Tips'):
         st.subheader('Tips')
+
 
 
