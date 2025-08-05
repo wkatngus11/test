@@ -45,7 +45,7 @@ with col1:
        # st.plotly_chart(df)
     with st.expander('Content3_image'):
         st.subheader('Content3_image')   
-        st.image('./image/catdog.jpg')
+        st.image('./image/love.jpg')
         st.write('<h1> This is new title</h1>', unsafe_allow_html=True)
         st.markdown(html, unsafe_allow_html=True)
     with st.expander('Content4_htmlcontent'):
@@ -56,6 +56,7 @@ with col1:
 with col2:
     with st.expander('Tips'):
         st.subheader('Tips')
+
 
 
 
